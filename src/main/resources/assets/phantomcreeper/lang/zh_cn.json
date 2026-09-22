@@ -1,4 +1,7 @@
 {
   "entity.phantomcreeper.phantom_creeper": "幻翼苦力怕",
-  "item.phantomcreeper.phantom_creeper_spawn_egg": "幻翼苦力怕刷怪蛋"
+  "item.phantomcreeper.phantom_creeper_spawn_egg": "幻翼苦力怕刷怪蛋",
+  "entity.phantomcreeper.calamity_phantom": "雷霆幻翼",
+  "entity.phantomcreeper.trident_zombie": "三叉戟小僵尸",
+  "item.phantomcreeper.calamity_phantom_spawn_egg": "雷霆幻翼刷怪蛋"
 }

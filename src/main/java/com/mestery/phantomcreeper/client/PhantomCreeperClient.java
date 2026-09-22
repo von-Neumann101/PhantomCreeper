@@ -11,6 +11,8 @@ public final class PhantomCreeperClient {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(PhantomCreeperMod.PHANTOM_CREEPER.get(), PhantomCreeperRenderer::new);
+        event.registerEntityRenderer(PhantomCreeperMod.CALAMITY_PHANTOM.get(), CalamityPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomCreeperMod.TRIDENT_ZOMBIE.get(), TridentZombieRenderer::new);
     }
 
     @SubscribeEvent

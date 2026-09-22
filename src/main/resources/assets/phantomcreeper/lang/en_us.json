@@ -1,4 +1,7 @@
 {
   "entity.phantomcreeper.phantom_creeper": "Phantom Creeper",
-  "item.phantomcreeper.phantom_creeper_spawn_egg": "Phantom Creeper Spawn Egg"
+  "item.phantomcreeper.phantom_creeper_spawn_egg": "Phantom Creeper Spawn Egg",
+  "entity.phantomcreeper.calamity_phantom": "Thunder Phantom",
+  "entity.phantomcreeper.trident_zombie": "Trident Rider",
+  "item.phantomcreeper.calamity_phantom_spawn_egg": "Thunder Phantom Spawn Egg"
 }

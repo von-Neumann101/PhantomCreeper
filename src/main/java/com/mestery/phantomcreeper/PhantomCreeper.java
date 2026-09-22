@@ -48,15 +48,23 @@ public class PhantomCreeper extends Phantom {
         return Mth.clamp(Mth.lerp(partialTick, Math.max(0, previousFuseTicks), Math.max(0, getFuseTicks())) / FUSE_DURATION, 0, 1);
     }
 
-    private boolean canPursue(LivingEntity target) {
+    protected boolean canPursue(LivingEntity target) {
         return target != null && target.level() == level() && target.isAlive() && canAttack(target)
                 && !(target instanceof Player player && (player.isCreative() || player.isSpectator()));
     }
 
     private boolean canPrimeAt(LivingEntity target) {
-        return canPursue(target)
+        return usesExplosiveAttack() && canPursue(target)
                 && distanceToSqr(target.getX(), target.getY(0.5), target.getZ()) <= 9
                 && hasLineOfSight(target);
+    }
+
+    protected boolean usesExplosiveAttack() {
+        return true;
+    }
+
+    protected float getExplosionPower() {
+        return 3;
     }
 
     private void prime(LivingEntity target) {
@@ -80,7 +88,7 @@ public class PhantomCreeper extends Phantom {
                     entityData.set(FUSE_TICKS, elapsed);
                     if (elapsed >= FUSE_DURATION) {
                         dead = true;
-                        level().explode(this, getX(), getY(), getZ(), 3, Level.ExplosionInteraction.MOB);
+                        level().explode(this, getX(), getY(), getZ(), getExplosionPower(), Level.ExplosionInteraction.MOB);
                         triggerOnDeathMobEffects(Entity.RemovalReason.KILLED);
                         discard();
                         return;
@@ -119,6 +127,7 @@ public class PhantomCreeper extends Phantom {
 
     @Override
     public boolean doHurtTarget(Entity target) {
+        if (!usesExplosiveAttack()) return super.doHurtTarget(target);
         // Vanilla Phantom calls this on contact; this mob attacks with its fuse.
         if (target instanceof LivingEntity living && canPrimeAt(living)) {
             prime(living);
