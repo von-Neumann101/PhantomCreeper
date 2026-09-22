@@ -81,6 +81,7 @@ public class CalamityPhantom extends PhantomCreeper {
             for (WrappedGoal goal : phantomGoals) goalSelector.removeGoal(goal.getGoal());
         } else if (getPhase() == Phase.AIRBORNE) {
             for (WrappedGoal goal : phantomGoals) goalSelector.addGoal(goal.getPriority(), goal.getGoal());
+            if (boostTicks > 0) setDeltaMovement(Vec3.ZERO);
             boostTicks = 0;
             sonicChargeTicks = 0;
         }
@@ -96,7 +97,9 @@ public class CalamityPhantom extends PhantomCreeper {
         else if (fraction < 0.6F && getPhase() == Phase.SWOOP) {
             changePhase(Phase.AIRBORNE);
             boostTicks = 24;
-            boostHeight = Math.max(getY() + 8, canPursue(getTarget()) ? getTarget().getY() + 12 : getY() + 12);
+            // Keep the original boost's maximum climb (0.8 * 24); only reach it faster.
+            boostHeight = Math.min(getY() + 0.8 * 24,
+                    Math.max(getY() + 8, canPursue(getTarget()) ? getTarget().getY() + 12 : getY() + 12));
             entityData.set(BOOSTING, true);
             playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 2, 0.8F);
         }
@@ -269,6 +272,8 @@ public class CalamityPhantom extends PhantomCreeper {
         boostTicks = getPhase() == Phase.AIRBORNE ? Mth.clamp(tag.getInt("RocketTicks"), 0, 24) : 0;
         boostHeight = tag.contains("RocketHeight") ? tag.getDouble("RocketHeight") : getY() + 12;
         if (!Double.isFinite(boostHeight)) boostHeight = getY() + 12;
+        // Old saves may contain an unreachable high target; retain the old remaining climb budget.
+        if (boostTicks > 0) boostHeight = Math.min(boostHeight, getY() + 0.8 * boostTicks);
         sonicChargeTicks = getPhase() == Phase.AIRBORNE ? Mth.clamp(tag.getInt("SonicCharge"), 0, 34) : 0;
         entityData.set(BOOSTING, boostTicks > 0);
         entityData.set(CHARGING, sonicChargeTicks > 0);
