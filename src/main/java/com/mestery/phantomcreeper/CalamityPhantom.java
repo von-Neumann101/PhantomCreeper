@@ -124,7 +124,9 @@ public class CalamityPhantom extends PhantomCreeper {
         super.tick();
         if (level() instanceof ServerLevel server && isAlive() && !isNoAi() && boostTicks > 0) {
             Vec3 tail = headPosition(0, -1.1, 0.95);
-            server.sendParticles(ParticleTypes.FIREWORK, tail.x, tail.y, tail.z, 5, 0.1, 0.1, 0.1, 0.08);
+            server.sendParticles(ParticleTypes.FLAME, tail.x, tail.y, tail.z, 8, 0.09, 0.09, 0.09, 0.035);
+            server.sendParticles(ParticleTypes.SMOKE, tail.x, tail.y, tail.z, 4, 0.12, 0.06, 0.12, 0.025);
+            server.sendParticles(ParticleTypes.FIREWORK, tail.x, tail.y, tail.z, 8, 0.1, 0.1, 0.1, 0.1);
             if (--boostTicks == 0) entityData.set(BOOSTING, false);
         }
     }
@@ -150,7 +152,7 @@ public class CalamityPhantom extends PhantomCreeper {
                 Vec3 destination = boostTicks > 0 ? new Vec3(getX(), height, getZ())
                         : new Vec3(target.getX() + Math.cos(angle) * 8, height, target.getZ() + Math.sin(angle) * 8);
                 Vec3 offset = destination.subtract(position());
-                movement = offset.normalize().scale(Math.min(boostTicks > 0 ? 0.8 : 0.25, offset.length()));
+                movement = offset.normalize().scale(Math.min(boostTicks > 0 ? 1.6 : 0.25, offset.length()));
                 if (hasTarget) {
                     Vec3 aim = target.position().subtract(position());
                     setYRot((float) (Mth.atan2(aim.z, aim.x) * Mth.RAD_TO_DEG) - 90);
